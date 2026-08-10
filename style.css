@@ -3020,6 +3020,7 @@ body {
 .contact-bottom span {
     font-size: 9px;
     font-weight: 900;
+    text-align: center;
     letter-spacing: 3px;
     white-space: nowrap;
 }
