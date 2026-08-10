@@ -1,255 +1,840 @@
+// =========================================================
+// NAVBAR
+// =========================================================
 
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-    hamburger.classList.toggle('active');
-});
+if (hamburger && navLinks) {
 
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('active');
+    hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
+        hamburger.classList.toggle("active");
     });
-});
 
-// ============================================
+    document.querySelectorAll(".nav-links a").forEach((link) => {
 
-const revealElements = document.querySelectorAll('.scroll-reveal');
+        link.addEventListener("click", () => {
+            navLinks.classList.remove("open");
+            hamburger.classList.remove("active");
+        });
 
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
     });
-}, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -30px 0px'
-});
 
-revealElements.forEach(el => {
-    revealObserver.observe(el);
-});
+}
 
-// ============================================
 
-const sections = document.querySelectorAll('section[id]');
-const navLinksAll = document.querySelectorAll('.nav-links a');
+// =========================================================
+// SCROLL REVEAL
+// =========================================================
 
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
+const revealElements =
+    document.querySelectorAll(".scroll-reveal");
+
+if (revealElements.length) {
+
+    const revealObserver =
+        new IntersectionObserver((entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+
+            });
+
+        }, {
+            threshold: 0.15,
+            rootMargin: "0px 0px -30px 0px"
+        });
+
+
+    revealElements.forEach((element) => {
+        revealObserver.observe(element);
+    });
+
+}
+
+
+// =========================================================
+// ACTIVE NAV LINK ON SCROLL
+// =========================================================
+
+const sections =
+    document.querySelectorAll("section[id]");
+
+const navLinksAll =
+    document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach((section) => {
+
+        const sectionTop =
+            section.offsetTop - 120;
+
         if (window.scrollY >= sectionTop) {
-            current = section.getAttribute('id');
+            current = section.getAttribute("id");
         }
+
     });
 
-    navLinksAll.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
+
+    navLinksAll.forEach((link) => {
+
+        link.classList.remove("active");
+
+        if (
+            link.getAttribute("href") ===
+            `#${current}`
+        ) {
+            link.classList.add("active");
         }
+
     });
+
 });
 
 
-// ============================================
-//  ================TYPING EFFECT =============
-// ============================================
+// =========================================================
+// TYPING EFFECT
+// =========================================================
 
-const typingText = document.getElementById('typingText');
+const typingText =
+    document.getElementById("typingText");
+
 const words = [
-    'Web Experiences.',
-    'Front-End Developer.',
-    'Software Engineer.',
-    'UI/UX Enthusiast.',
-    'Creative Coder.'
+    "Web Experiences.",
+    "Front-End Developer.",
+    "Software Engineer.",
+    "UI/UX Enthusiast.",
+    "Creative Coder."
 ];
 
 let wordIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
-let speed = 100; 
+let speed = 100;
+
 
 function typeEffect() {
-    const currentWord = words[wordIndex];
-    
+
+    if (!typingText) return;
+
+    const currentWord =
+        words[wordIndex];
+
+
     if (isDeleting) {
 
-        typingText.textContent = currentWord.substring(0, charIndex - 1);
+        typingText.textContent =
+            currentWord.substring(
+                0,
+                charIndex - 1
+            );
+
         charIndex--;
+
         speed = 70;
+
     } else {
 
-        typingText.textContent = currentWord.substring(0, charIndex + 1);
+        typingText.textContent =
+            currentWord.substring(
+                0,
+                charIndex + 1
+            );
+
         charIndex++;
+
         speed = 130;
+
     }
 
-    if (!isDeleting && charIndex === currentWord.length) {
-        speed = 1500; 
+
+    if (
+        !isDeleting &&
+        charIndex === currentWord.length
+    ) {
+
+        speed = 1500;
         isDeleting = true;
+
     }
-    
-    if (isDeleting && charIndex === 0) {
+
+
+    if (
+        isDeleting &&
+        charIndex === 0
+    ) {
+
         isDeleting = false;
-        wordIndex = (wordIndex + 1) % words.length; 
+
+        wordIndex =
+            (wordIndex + 1) % words.length;
+
         speed = 300;
+
     }
+
 
     setTimeout(typeEffect, speed);
 }
+
 
 typeEffect();
 
 
 
-// ============================================
-/* ============================================CUSTOM CURSOR============================================ */
+// =========================================================
+// BACK TO TOP
+// =========================================================
 
-const cursor = document.createElement("div");
-
-cursor.classList.add("custom-cursor");
-
-document.body.appendChild(cursor);
+const backToTop =
+    document.getElementById("backToTop");
 
 
-/* ============================================MOUSE POSITION============================================ */
+if (backToTop) {
 
-let mouseX = 0;
-let mouseY = 0;
+    window.addEventListener("scroll", () => {
 
-let cursorX = 0;
-let cursorY = 0;
+        if (window.scrollY > 500) {
 
+            backToTop.classList.add("show");
 
-/* ============================================MOUSE MOVE============================================ */
+        } else {
 
-document.addEventListener("mousemove", (e) => {
+            backToTop.classList.remove("show");
 
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+        }
 
-});
+    });
 
 
+    backToTop.addEventListener("click", () => {
 
-function animateCursor() {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
-    cursorX += (mouseX - cursorX) * 0.6;
-    cursorY += (mouseY - cursorY) * 0.6;
+    });
 
-
-    cursor.style.transform = `
-        translate3d(
-            ${cursorX}px,
-            ${cursorY}px,
-            0
-        )
-        translate(-50%, -50%)
-    `;
-
-
-    requestAnimationFrame(animateCursor);
 }
 
-animateCursor();
 
+// =========================================================
+// EMAILJS
+// =========================================================
 
-/* ============================================INTERACTIVE ELEMENTS============================================ */
+if (typeof emailjs !== "undefined") {
 
-const interactiveElements = document.querySelectorAll(`
-    a,
-    button,
-    input,
-    textarea,
-    select,
-    .nav-btn,
-    .hero-btn,
-    .project-btn,
-    .contact-btn,
-    .logo,
-    .skill-card,
-    .project-card,
-    .featured-project,
-    .about-card,
-    .about-btn,
-    .stack-item
-`);
-
-
-/* ============================================HOVER EFFECT============================================ */
-
-interactiveElements.forEach((element) => {
-
-    element.addEventListener("mouseenter", () => {
-
-        cursor.classList.add("hover");
-
+    emailjs.init({
+        publicKey: "n0dEbxfI7aiCdlIti"
     });
 
-
-    element.addEventListener("mouseleave", () => {
-
-        cursor.classList.remove("hover");
-
-    });
-
-});
+}
 
 
-/* ============================================MOUSE DOWN============================================ */
+// =========================================================
+// CONTACT FORM
+// =========================================================
 
-document.addEventListener("mousedown", () => {
-
-    cursor.classList.add("active");
-
-});
-
-
-/* ============================================MOUSE UP============================================ */
-
-document.addEventListener("mouseup", () => {
-
-    cursor.classList.remove("active");
-
-});
+const contactForm =
+    document.getElementById("contactForm");
 
 
+const nameInput =
+    document.getElementById("name");
 
-/* ============================================BACK TO TOP============================================ */
+const emailInput =
+    document.getElementById("email");
 
-const backToTop = document.getElementById("backToTop");
+const messageInput =
+    document.getElementById("message");
 
 
+const nameError =
+    document.getElementById("nameError");
 
-window.addEventListener("scroll", () => {
+const emailError =
+    document.getElementById("emailError");
 
-    if (window.scrollY > 500) {
+const messageError =
+    document.getElementById("messageError");
 
-        backToTop.classList.add("show");
 
-    } else {
+const submitButton =
+    document.getElementById("ticketSubmit");
 
-        backToTop.classList.remove("show");
+
+// =========================================================
+// ONLY RUN FORM CODE IF FORM EXISTS
+// =========================================================
+
+if (
+    contactForm &&
+    nameInput &&
+    emailInput &&
+    messageInput
+) {
+
+
+    // =====================================================
+    // REGEX
+    // =====================================================
+
+    const nameRegex =
+        /^[A-Za-z\u0600-\u06FF\s]+$/;
+
+
+    const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+
+    // =====================================================
+    // CLEAN TEXT
+    // =====================================================
+
+    function cleanText(value) {
+
+        return value
+            .replace(/\s+/g, " ")
+            .trim();
 
     }
 
-});
+
+    // =====================================================
+    // SHOW ERROR
+    // =====================================================
+
+    function showError(
+        input,
+        errorElement,
+        message
+    ) {
+
+        input.classList.remove(
+            "input-valid"
+        );
+
+        input.classList.add(
+            "input-error"
+        );
 
 
+        if (errorElement) {
+            errorElement.textContent =
+                message;
+        }
 
-backToTop.addEventListener("click", () => {
+    }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 
-});
+    // =====================================================
+    // SHOW VALID
+    // =====================================================
 
-// ===================================
+    function showValid(
+        input,
+        errorElement
+    ) {
 
+        input.classList.remove(
+            "input-error"
+        );
+
+        input.classList.add(
+            "input-valid"
+        );
+
+
+        if (errorElement) {
+            errorElement.textContent =
+                "";
+        }
+
+    }
+
+
+    // =====================================================
+    // VALIDATE NAME
+    // =====================================================
+
+    function validateName() {
+
+        const value =
+            cleanText(nameInput.value);
+
+
+        if (value === "") {
+
+            showError(
+                nameInput,
+                nameError,
+                "Please enter your name."
+            );
+
+            return false;
+        }
+
+
+        if (value.length < 3) {
+
+            showError(
+                nameInput,
+                nameError,
+                "Name must be at least 3 characters."
+            );
+
+            return false;
+        }
+
+
+        if (value.length > 50) {
+
+            showError(
+                nameInput,
+                nameError,
+                "Name must be less than 50 characters."
+            );
+
+            return false;
+        }
+
+
+        if (!nameRegex.test(value)) {
+
+            showError(
+                nameInput,
+                nameError,
+                "Name can contain letters and spaces only."
+            );
+
+            return false;
+        }
+
+
+        showValid(
+            nameInput,
+            nameError
+        );
+
+        return true;
+
+    }
+
+
+    // =====================================================
+    // VALIDATE EMAIL
+    // =====================================================
+
+    function validateEmail() {
+
+        const value =
+            emailInput.value.trim();
+
+
+        if (value === "") {
+
+            showError(
+                emailInput,
+                emailError,
+                "Please enter your email."
+            );
+
+            return false;
+        }
+
+
+        if (value.length > 100) {
+
+            showError(
+                emailInput,
+                emailError,
+                "Email is too long."
+            );
+
+            return false;
+        }
+
+
+        if (!emailRegex.test(value)) {
+
+            showError(
+                emailInput,
+                emailError,
+                "Please enter a valid email address."
+            );
+
+            return false;
+        }
+
+
+        showValid(
+            emailInput,
+            emailError
+        );
+
+        return true;
+
+    }
+
+
+    // =====================================================
+    // VALIDATE MESSAGE
+    // =====================================================
+
+    function validateMessage() {
+
+        const value =
+            cleanText(messageInput.value);
+
+
+        if (value === "") {
+
+            showError(
+                messageInput,
+                messageError,
+                "Please tell me about your project."
+            );
+
+            return false;
+        }
+
+
+        if (value.length < 10) {
+
+            showError(
+                messageInput,
+                messageError,
+                "Please write at least 10 characters."
+            );
+
+            return false;
+        }
+
+
+        if (value.length > 1000) {
+
+            showError(
+                messageInput,
+                messageError,
+                "Message must be less than 1000 characters."
+            );
+
+            return false;
+        }
+
+
+        showValid(
+            messageInput,
+            messageError
+        );
+
+        return true;
+
+    }
+
+
+    // =====================================================
+    // LIVE VALIDATION
+    // =====================================================
+
+    nameInput.addEventListener(
+        "input",
+        () => {
+
+            if (
+                nameInput.value.length > 0
+            ) {
+
+                validateName();
+
+            }
+
+        }
+    );
+
+
+    emailInput.addEventListener(
+        "input",
+        () => {
+
+            if (
+                emailInput.value.length > 0
+            ) {
+
+                validateEmail();
+
+            }
+
+        }
+    );
+
+
+    messageInput.addEventListener(
+        "input",
+        () => {
+
+            if (
+                messageInput.value.length > 0
+            ) {
+
+                validateMessage();
+
+            }
+
+        }
+    );
+
+
+    // =====================================================
+    // BLUR VALIDATION
+    // =====================================================
+
+    nameInput.addEventListener(
+        "blur",
+        validateName
+    );
+
+    emailInput.addEventListener(
+        "blur",
+        validateEmail
+    );
+
+    messageInput.addEventListener(
+        "blur",
+        validateMessage
+    );
+
+
+    // =====================================================
+    // FORM SUBMIT
+    // =====================================================
+
+    contactForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            // ---------------------------------------------
+            // VALIDATE
+            // ---------------------------------------------
+
+            const nameValid =
+                validateName();
+
+            const emailValid =
+                validateEmail();
+
+            const messageValid =
+                validateMessage();
+
+
+            // ---------------------------------------------
+            // STOP IF INVALID
+            // ---------------------------------------------
+
+            if (
+                !nameValid ||
+                !emailValid ||
+                !messageValid
+            ) {
+
+                if (!nameValid) {
+
+                    nameInput.focus();
+
+                } else if (!emailValid) {
+
+                    emailInput.focus();
+
+                } else {
+
+                    messageInput.focus();
+
+                }
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // CHECK EMAILJS
+            // ---------------------------------------------
+
+            if (
+                typeof emailjs === "undefined"
+            ) {
+
+                console.error(
+                    "EmailJS library is not loaded."
+                );
+
+                alert(
+                    "Email service is not available. Please try again later."
+                );
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // BUTTON LOADING
+            // ---------------------------------------------
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.innerHTML = `
+                    SENDING...
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                `;
+
+            }
+
+
+            try {
+
+                // -----------------------------------------
+                // SEND EMAIL
+                // -----------------------------------------
+
+                await emailjs.sendForm(
+                    "service_iuvwqjz",
+                    "template_lvplveo",
+                    contactForm
+                );
+
+
+                // -----------------------------------------
+                // RESET FORM
+                // -----------------------------------------
+
+                contactForm.reset();
+
+
+                nameInput.classList.remove(
+                    "input-valid",
+                    "input-error"
+                );
+
+                emailInput.classList.remove(
+                    "input-valid",
+                    "input-error"
+                );
+
+                messageInput.classList.remove(
+                    "input-valid",
+                    "input-error"
+                );
+
+
+                if (nameError) {
+                    nameError.textContent = "";
+                }
+
+                if (emailError) {
+                    emailError.textContent = "";
+                }
+
+                if (messageError) {
+                    messageError.textContent = "";
+                }
+
+
+                // -----------------------------------------
+                // SUCCESS MESSAGE
+                // -----------------------------------------
+
+                const successMessage =
+                    document.createElement("div");
+
+
+                successMessage.className =
+                    "form-success";
+
+
+                successMessage.textContent =
+                    "✓ Message sent successfully!";
+
+
+                contactForm.appendChild(
+                    successMessage
+                );
+
+
+                setTimeout(() => {
+
+                    successMessage.remove();
+
+                }, 5000);
+
+
+            } catch (error) {
+
+                // -----------------------------------------
+                // ERROR
+                // -----------------------------------------
+
+                console.error(
+                    "EmailJS Error:",
+                    error
+                );
+
+
+                const errorMessage =
+                    document.createElement("div");
+
+
+                errorMessage.className =
+                    "form-error";
+
+
+                errorMessage.textContent =
+                    "✕ Failed to send message. Please try again.";
+
+
+                contactForm.appendChild(
+                    errorMessage
+                );
+
+
+                setTimeout(() => {
+
+                    errorMessage.remove();
+
+                }, 5000);
+
+            }
+
+
+            // ---------------------------------------------
+            // RESET BUTTON
+            // ---------------------------------------------
+
+            if (submitButton) {
+
+                submitButton.disabled = false;
+
+                submitButton.innerHTML = `
+                    SEND MESSAGE
+                    <i class="fa-solid fa-arrow-right"></i>
+                `;
+
+            }
+
+        }
+    );
+
+}
